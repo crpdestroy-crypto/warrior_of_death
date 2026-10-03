@@ -36,7 +36,8 @@ jobs:
           exit $FAIL
 
       - name: Verify scripts (headless import)
-        run: godot --headless --import 2>&1 | tail -n 40
+        run: |
+          godot --headless --import 2>&1 | tail -n 40
           godot --headless --check-only --script res://scripts/core/Game.gd 2>&1 | tail -n 20
 
       - name: Export Android APK
@@ -44,6 +45,7 @@ jobs:
           mkdir -p ../build
           godot --headless --export-release Android ../build/warriorofdeath.apk 2>&1 | tail -n 40
           ls -la ../build/
+          test -f ../build/warriorofdeath.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
