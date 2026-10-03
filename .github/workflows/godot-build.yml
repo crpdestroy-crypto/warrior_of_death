@@ -57,7 +57,7 @@ jobs:
             SDKMAN="$ANDROID_SDK_ROOT"
             BS=$(ls -d $SDKMAN/build-tools/* 2>/dev/null | sort -V | tail -n 1)
             echo "build-tools: $BS"
-            "$BS/apksigner" sign --ks ../godot/debug.keystore --ks-pass:pass:android --key-pass:pass:android --out ../build/warriorofdeath-signed.apk ../build/warriorofdeath.apk
+            "$BS/apksigner" sign --ks ../godot/debug.keystore --ks-pass pass:android --key-pass pass:android --out ../build/warriorofdeath-signed.apk ../build/warriorofdeath.apk
             mv ../build/warriorofdeath-signed.apk ../build/warriorofdeath.apk
             "$BS/apksigner" verify --print-certs ../build/warriorofdeath.apk | head -n 5
           else
