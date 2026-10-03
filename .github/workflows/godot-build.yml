@@ -23,7 +23,7 @@ jobs:
         uses: chickensoft-games/setup-godot@v1
         with:
           version: 4.2.2
-          use-godot-release: true
+          use-dotnet: false
           include-templates: true
 
       - name: Syntax check (gdparse)
@@ -36,10 +36,13 @@ jobs:
           exit $FAIL
 
       - name: Verify scripts (headless import)
-        run: godot --headless --import --quit 2>&1 | tail -n 20
+        run: godot --headless --import 2>&1 | tail -n 40
 
       - name: Export Android APK
-        run: godot --headless --export-release Android ../build/warriorofdeath.apk 2>&1 | tail -n 20
+        run: |
+          mkdir -p ../build
+          godot --headless --export-release Android ../build/warriorofdeath.apk 2>&1 | tail -n 40
+          ls -la ../build/
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

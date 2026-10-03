@@ -64,8 +64,8 @@ var _state_time: float = 0.0
 var _jump_cut_done: bool = false
 var _hitbox_off_at: float = 0.0
 
-@onready var hurtbox: Area2D = $Hurtbox
-@onready var hitbox: Area2D = $Hitbox
+@onready var hurtbox: Hurtbox = $Hurtbox
+@onready var hitbox: Hitbox = $Hitbox
 @onready var visual: Node2D = $Visual
 
 func _ready() -> void:
