@@ -6,6 +6,8 @@ const FLOOR_Y: int = 8
 const X0: int = 0
 const X1: int = 79
 
+var _map: TileMap
+
 func _ready() -> void:
 	_build_tiles()
 	_build_bodies()
@@ -14,8 +16,8 @@ func _sy(row: int) -> float:
 	return float(row * TS)
 
 func _build_tiles() -> void:
-	var layer := TileMapLayer.new()
-	layer.name = "Ground"
+	var map := TileMap.new()
+	map.name = "Ground"
 	var atlas := TileSetAtlasSource.new()
 	atlas.texture = load("res://assets/tiles/crypt_tileset.png")
 	atlas.texture_region_size = Vector2i(TS, TS)
@@ -24,28 +26,29 @@ func _build_tiles() -> void:
 	var ts := TileSet.new()
 	ts.tile_size = Vector2i(TS, TS)
 	ts.add_source(atlas)
-	layer.tile_set = ts
-	add_child(layer)
+	map.tile_set = ts
+	add_child(map)
+	_map = map
 	for x in range(X0, X1 + 1):
 		_pit_gap(x)
 	for x in range(X0, X1 + 1):
 		if _in_pit(x):
 			continue
-		layer.set_cell(Vector2i(x, FLOOR_Y), 0, Vector2i(0, 0))
+		_map.set_cell(0, Vector2i(x, FLOOR_Y), 0, Vector2i(0, 0))
 	for x in [12, 66]:
-		layer.set_cell(Vector2i(x, FLOOR_Y - 1), 0, Vector2i(6, 0))
+		_map.set_cell(0, Vector2i(x, FLOOR_Y - 1), 0, Vector2i(6, 0))
 	for y in range(-2, FLOOR_Y):
-		layer.set_cell(Vector2i(X0, y), 0, Vector2i(2, 0))
-		layer.set_cell(Vector2i(X1, y), 0, Vector2i(2, 0))
+		_map.set_cell(0, Vector2i(X0, y), 0, Vector2i(2, 0))
+		_map.set_cell(0, Vector2i(X1, y), 0, Vector2i(2, 0))
 	for x in range(8, 17):
-		layer.set_cell(Vector2i(x, 2), 0, Vector2i(0, 0))
+		_map.set_cell(0, Vector2i(x, 2), 0, Vector2i(0, 0))
 	for x in range(24, 37):
-		layer.set_cell(Vector2i(x, 0), 0, Vector2i(0, 0))
+		_map.set_cell(0, Vector2i(x, 0), 0, Vector2i(0, 0))
 	for x in range(46, 53):
-		layer.set_cell(Vector2i(x, 3), 0, Vector2i(0, 0))
+		_map.set_cell(0, Vector2i(x, 3), 0, Vector2i(0, 0))
 	for x in range(62, 75):
-		layer.set_cell(Vector2i(x, 1), 0, Vector2i(0, 0))
-	move_child(layer, 1)
+		_map.set_cell(0, Vector2i(x, 1), 0, Vector2i(0, 0))
+	move_child(_map, 1)
 
 func _pit_gap(_x: int) -> void:
 	pass

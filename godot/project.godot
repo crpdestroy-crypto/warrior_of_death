@@ -5,7 +5,7 @@ config_version=5
 config/name="WarriorOfDeath - Пепел Угасшего Солнца"
 config/description="Dark souls-like metroidvania. Этап 1: физика и базовый контроллер."
 run/main_scene="res://scenes/biomes/CryptOfOblivion.tscn"
-config/features=PackedStringArray("4.2", "Mobile")
+config/features=PackedStringArray("4.4", "Mobile")
 boot_splash/bg_color=Color(0.05, 0.04, 0.08, 1)
 
 [display]

@@ -226,6 +226,6 @@ func _apply_stats_to_player() -> void:
 	if player == null:
 		return
 	player.max_hp = player_max_hp()
-	player.hp = minf(player.hp if player.hp > 0.0 else player.max_hp(), player.max_hp())
+	player.hp = minf(player.hp if player.hp > 0.0 else player.max_hp, player.max_hp)
 	player.max_stamina = 80.0 + float(stats.get("endurance", 5)) * 4.0
 	player.stamina = minf(player.stamina, player.max_stamina)
