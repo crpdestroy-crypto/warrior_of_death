@@ -1,0 +1,45 @@
+; Engine configuration file.
+config_version=5
+
+[application]
+config/name="WarriorOfDeath - Пепел Угасшего Солнца"
+config/description="Dark souls-like metroidvania. Этап 1: физика и базовый контроллер."
+run/main_scene="res://scenes/biomes/CryptOfOblivion.tscn"
+config/features=PackedStringArray("4.2", "Mobile")
+boot_splash/bg_color=Color(0.05, 0.04, 0.08, 1)
+
+[display]
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/resizable=true
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=6
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.05, 0.04, 0.08, 1)
+
+[physics]
+2d/default_gravity=980.0
+2d/physics_ticks_per_second=60
+
+[input]
+move_left={"deadzone": 0.2, "events": [Object(InputEventKey,"physical_keycode":4194319), Object(InputEventKey,"physical_keycode":65)]}
+move_right={"deadzone": 0.2, "events": [Object(InputEventKey,"physical_keycode":4194321), Object(InputEventKey,"physical_keycode":68)]}
+jump={"deadzone": 0.2, "events": [Object(InputEventKey,"physical_keycode":32), Object(InputEventKey,"physical_keycode":87), Object(InputEventJoypadButton,"button_index":0)]}
+roll={"deadzone": 0.2, "events": [Object(InputEventKey,"physical_keycode":4194305), Object(InputEventKey,"physical_keycode":83), Object(InputEventJoypadButton,"button_index":2)]}
+attack={"deadzone": 0.2, "events": [Object(InputEventMouseButton,"button_index":1), Object(InputEventKey,"physical_keycode":74), Object(InputEventJoypadButton,"button_index":1)]}
+parry={"deadzone": 0.2, "events": [Object(InputEventMouseButton,"button_index":2), Object(InputEventKey,"physical_keycode":75), Object(InputEventJoypadButton,"button_index":4)]}
+
+[layer_names]
+2d_physics/layer_1="World"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="PlayerHitbox"
+2d_physics/layer_5="EnemyHitbox"
+
+[input_devices]
+pointing/emulate_touch_from_mouse=true

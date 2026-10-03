@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/Hud.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="3"]
+
+[sub_resource type="RectangleShape2D" id="floor"]
+size = Vector2(2000, 40)
+
+[sub_resource type="RectangleShape2D" id="plat"]
+size = Vector2(120, 20)
+
+[node name="TestArena" type="Node2D"]
+
+[node name="Bg" type="ColorRect" parent="."]
+z_index = -10
+offset_right = 640.0
+offset_bottom = 360.0
+color = Color(0.05, 0.04, 0.08, 1)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="FloorShape" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("floor")
+
+[node name="PlatA" type="StaticBody2D" parent="."]
+position = Vector2(-160, -110)
+collision_layer = 1
+collision_mask = 0
+
+[node name="PlatAShape" type="CollisionShape2D" parent="PlatA"]
+shape = SubResource("plat")
+
+[node name="PlatB" type="StaticBody2D" parent="."]
+position = Vector2(170, -150)
+collision_layer = 1
+collision_mask = 0
+
+[node name="PlatBShape" type="CollisionShape2D" parent="PlatB"]
+shape = SubResource("plat")
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(0, -80)
+
+[node name="Hud" parent="." instance=ExtResource("2")]
+
+[node name="TouchControls" parent="." instance=ExtResource("3")]

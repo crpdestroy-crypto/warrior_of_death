@@ -1,0 +1,62 @@
+name: Godot Android Build
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'godot/**'
+      - '.github/workflows/godot-build.yml'
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: godot
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Godot 4.2 + templates
+        uses: chickensoft-games/setup-godot@v1
+        with:
+          version: 4.2.2
+          use-godot-release: true
+          include-templates: true
+
+      - name: Syntax check (gdparse)
+        run: |
+          pip install gdtoolkit 2>&1 | tail -n 1
+          FAIL=0
+          for f in $(find scripts -name "*.gd"); do
+            gdparse "$f" >/dev/null 2>&1 || { echo "FAIL:$f"; FAIL=1; }
+          done
+          exit $FAIL
+
+      - name: Verify scripts (headless import)
+        run: godot --headless --import --quit 2>&1 | tail -n 20
+
+      - name: Export Android APK
+        run: godot --headless --export-release Android ../build/warriorofdeath.apk 2>&1 | tail -n 20
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: WarriorOfDeath-Godot-APK
+          path: build/warriorofdeath.apk
+
+      - name: Send APK to Telegram
+        env:
+          T_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN || secrets.BOT_TOKEN }}
+          T_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || secrets.CHAT_ID }}
+        run: |
+          APK_PATH=$(find ../build -name "*.apk" | head -n 1)
+          if [ -n "$T_BOT_TOKEN" ] && [ -n "$T_CHAT_ID" ] && [ -f "$APK_PATH" ]; then
+            curl -F chat_id="$T_CHAT_ID" -F document=@"$APK_PATH" \
+              -F caption="Пепел Угасшего Солнца (Godot): Этапы 2-5 — комбо-бой, парирование, враги, лут, алтарь, склеп." \
+              https://api.telegram.org/bot$T_BOT_TOKEN/sendDocument
+          else
+            echo "Secrets not provided or APK missing, upload only."
+          fi
