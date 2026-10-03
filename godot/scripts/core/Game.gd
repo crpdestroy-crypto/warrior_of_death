@@ -83,6 +83,8 @@ func _on_loot_picked(item: ItemData) -> void:
 func _on_player_died() -> void:
 	drop_stain()
 	message.emit("Эзра пал. Пыль осталась на месте смерти.")
+	await get_tree().create_timer(1.5).timeout
+	_respawn_player()
 
 func drop_stain() -> void:
 	_clear_stain()
@@ -109,6 +111,29 @@ func _clear_stain() -> void:
 	if is_instance_valid(_stain):
 		_stain.queue_free()
 	_stain = null
+
+func _respawn_player() -> void:
+	if player == null:
+		return
+	var altar: Node2D = null
+	var altars: Array = get_tree().get_nodes_in_group("altars")
+	for a in altars:
+		if String((a as Altar).altar_id) == spawn_altar:
+			altar = a as Node2D
+			break
+	if altar == null and not altars.is_empty():
+		altar = altars[0] as Node2D
+	if altar != null:
+		player.global_position = altar.global_position + Vector2(0, -40)
+	player.hp = player_max_hp()
+	player.stamina = player.max_stamina
+	player.velocity = Vector2.ZERO
+	player.set("_state_time", 0.0)
+	player._change_state(PlayerController.State.IDLE)
+	player.set("_set_iframes", false)
+	player.hurtbox.set_deferred("monitorable", true)
+	player.health_changed.emit(player.hp, player_max_hp())
+	player.stamina_changed.emit(player.stamina, player.max_stamina)
 
 func rest_at(altar: Altar) -> void:
 	spawn_altar = String(altar.altar_id)
@@ -147,7 +172,7 @@ func upgrade_cost() -> int:
 	return 20 + total * 8
 
 func on_enemy_killed(enemy: BaseEnemy) -> void:
-	_on_enemy_died(enemy)
+	pass
 
 func add_seal(seal_id: String) -> void:
 	if not seals.has(seal_id):

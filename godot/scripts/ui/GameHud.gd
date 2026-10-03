@@ -8,6 +8,7 @@ var _menu: AltarMenu
 var _inv: InventoryMenu
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 15
 	var root := Control.new()
 	root.set_anchors_preset(Control.PRESET_TOP_WIDE)

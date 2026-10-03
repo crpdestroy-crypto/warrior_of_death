@@ -8,6 +8,7 @@ var _list: VBoxContainer
 var _info: Label
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 21
 	visible = false
 

@@ -215,6 +215,18 @@ func try_parry() -> bool:
 	_change_state(State.PARRY)
 	return true
 
+func receive_attack(attack: Dictionary, from: Node) -> void:
+	if state == State.DEAD or state == State.ROLL:
+		return
+	if is_parry_window_open():
+		_change_state(State.IDLE if is_on_floor() else State.FALL)
+		parried.emit(from)
+		var foe: Node = from
+		if foe != null and foe.has_method("receive_attack"):
+			foe.receive_attack({"damage": 0.0, "stagger": stagger_duration, "knockback": Vector2.ZERO, "element": &"parry"}, self)
+		return
+	take_damage(float(attack.get("damage", 5.0)), 0)
+
 func try_consume_parry() -> bool:
 	if not is_parry_window_open():
 		return false

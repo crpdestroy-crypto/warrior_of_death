@@ -7,6 +7,7 @@ var _root: Control
 var _info: Label
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 20
 	visible = false
 

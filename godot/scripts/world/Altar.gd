@@ -9,6 +9,7 @@ signal rested(altar: Altar)
 var _used_label: bool = false
 
 func _ready() -> void:
+	add_to_group("altars")
 	collision_layer = 0
 	collision_mask = 2
 	monitoring = true
