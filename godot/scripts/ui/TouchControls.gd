@@ -9,6 +9,7 @@ var _right_held: bool = false
 
 func _ready() -> void:
 	layer = 10
+	add_to_group("touch")
 	_player = get_node_or_null(player_path) as PlayerController
 	if _player == null:
 		_player = get_tree().get_first_node_in_group("player") as PlayerController

@@ -11,6 +11,8 @@ var _map: TileMap
 func _ready() -> void:
 	_build_tiles()
 	_build_bodies()
+	_add_glow(Vector2(208, 96), Color(1.0, 0.55, 0.2, 0.5), 220.0)
+	_add_glow(Vector2(120, 70), Color(1.0, 0.8, 0.4, 0.3), 160.0)
 
 func _sy(row: int) -> float:
 	return float(row * TS)
@@ -87,3 +89,21 @@ func _wall(x: int) -> void:
 	shape.position = Vector2(float(x * TS) + TS / 2.0, float((FLOOR_Y - 2) * TS))
 	body.add_child(shape)
 	add_child(body)
+
+func _add_glow(at: Vector2, color: Color, size: float) -> void:
+	var grad := Gradient.new()
+	grad.set_color(0, color)
+	grad.set_color(1, Color(color.r, color.g, color.b, 0.0))
+	var tex := GradientTexture2D.new()
+	tex.gradient = grad
+	tex.fill = GradientTexture2D.FILL_RADIAL
+	tex.fill_from = Vector2(0.5, 0.5)
+	tex.fill_to = Vector2(1.0, 0.5)
+	tex.width = 128
+	tex.height = 128
+	var spr := Sprite2D.new()
+	spr.texture = tex
+	spr.position = at
+	spr.scale = Vector2(size / 128.0, size / 128.0)
+	spr.z_index = -5
+	add_child(spr)

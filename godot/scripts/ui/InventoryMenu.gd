@@ -19,9 +19,13 @@ func open(game: Game) -> void:
 		_built = true
 	_refresh()
 	visible = true
+	get_tree().paused = true
+	_set_touch(false)
 
 func close() -> void:
 	visible = false
+	get_tree().paused = false
+	_set_touch(true)
 
 func _build() -> void:
 	_root = Control.new()
@@ -86,3 +90,7 @@ func _affix_text(item: ItemData) -> String:
 func _on_equip(i: int) -> void:
 	if _game and _game.inventory.equip(i):
 		_refresh()
+
+func _set_touch(v: bool) -> void:
+	for n in get_tree().get_nodes_in_group("touch"):
+		(n as CanvasItem).visible = v

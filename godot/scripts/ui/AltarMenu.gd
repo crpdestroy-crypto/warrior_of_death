@@ -19,10 +19,12 @@ func open(game: Game) -> void:
 	_refresh()
 	visible = true
 	get_tree().paused = true
+	_set_touch(false)
 
 func close() -> void:
 	visible = false
 	get_tree().paused = false
+	_set_touch(true)
 
 func _build() -> void:
 	_root = Control.new()
@@ -63,3 +65,7 @@ func _refresh() -> void:
 		int(_game.stats.get("vigor", 5)), int(_game.stats.get("strength", 5)), int(_game.stats.get("endurance", 5)),
 		_game.upgrade_cost(),
 	]
+
+func _set_touch(v: bool) -> void:
+	for n in get_tree().get_nodes_in_group("touch"):
+		(n as CanvasItem).visible = v

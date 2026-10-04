@@ -54,10 +54,15 @@ script = ExtResource("4")
 shape = SubResource("hit")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -60)
+position = Vector2(0, -40)
+zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 drag_horizontal_enabled = true
 drag_left_margin = 0.15
 drag_right_margin = 0.15
+limit_left = 0
+limit_top = -400
+limit_right = 1280
+limit_bottom = 200
 editor_draw_limits = true
