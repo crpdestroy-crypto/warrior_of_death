@@ -52,6 +52,7 @@ func player_max_hp() -> float:
 func gain_dust(amount: int) -> void:
 	carried_dust += amount
 	dust_changed.emit(carried_dust)
+	_audio("pickup")
 
 func _on_enemy_died(enemy: BaseEnemy) -> void:
 	gain_dust(enemy.dust_reward)
@@ -135,7 +136,13 @@ func _respawn_player() -> void:
 	player.health_changed.emit(player.hp, player_max_hp())
 	player.stamina_changed.emit(player.stamina, player.max_stamina)
 
+func _audio(sfx: String) -> void:
+	var bus: Node = get_tree().get_first_node_in_group("audio")
+	if bus != null and bus.has_method("play"):
+		bus.play(sfx)
+
 func rest_at(altar: Altar) -> void:
+	_audio("altar")
 	spawn_altar = String(altar.altar_id)
 	if player != null:
 		player.hp = player_max_hp()

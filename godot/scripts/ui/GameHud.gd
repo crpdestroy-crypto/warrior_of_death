@@ -15,12 +15,14 @@ func _ready() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	_dust_label = Label.new()
-	_dust_label.anchor_left = 0.45; _dust_label.anchor_right = 0.98
-	_dust_label.anchor_top = 0.01; _dust_label.anchor_bottom = 0.08
+	_dust_label.anchor_left = 0.62; _dust_label.anchor_right = 0.98
+	_dust_label.anchor_top = 0.015; _dust_label.anchor_bottom = 0.07
+	_dust_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_dust_label.add_theme_font_size_override("font_size", 14)
 	root.add_child(_dust_label)
 	_msg_label = Label.new()
-	_msg_label.anchor_left = 0.1; _msg_label.anchor_right = 0.9
-	_msg_label.anchor_top = 0.1; _msg_label.anchor_bottom = 0.2
+	_msg_label.anchor_left = 0.2; _msg_label.anchor_right = 0.8
+	_msg_label.anchor_top = 0.08; _msg_label.anchor_bottom = 0.14
 	_msg_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	root.add_child(_msg_label)
 	_menu = AltarMenu.new()

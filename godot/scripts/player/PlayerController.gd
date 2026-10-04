@@ -140,11 +140,18 @@ func get_input_vector() -> Vector2:
 	var x: float = Input.get_axis("move_left", "move_right") + touch_move.x
 	return Vector2(clampf(x, -1.0, 1.0), 0.0)
 
+
+func _sfx(name: String) -> void:
+	var bus: Node = get_tree().get_first_node_in_group("audio")
+	if bus != null and bus.has_method("play"):
+		bus.play(name)
+
 func try_jump() -> bool:
 	if state in [State.DEAD, State.ROLL]:
 		return false
 	if is_on_floor() or _coyote > 0.0:
 		_do_jump()
+		_sfx("jump")
 		return true
 	_buffer = jump_buffer
 	return false
@@ -161,6 +168,7 @@ func try_roll() -> bool:
 	facing = 1 if dir > 0.0 else -1
 	velocity = Vector2(float(facing) * roll_speed, velocity.y * 0.2)
 	_set_iframes(true)
+	_sfx("roll")
 	_change_state(State.ROLL)
 	return true
 
@@ -185,6 +193,7 @@ func try_attack() -> bool:
 	combo_index = 0
 	combo_queued = false
 	_start_swing()
+	_sfx("swing")
 	return true
 
 func _advance_combo() -> void:
@@ -192,6 +201,7 @@ func _advance_combo() -> void:
 	combo_queued = false
 	_consume_stamina(attack_cost * 0.5)
 	_start_swing()
+	_sfx("swing")
 
 func _start_swing() -> void:
 	var i: int = clampi(combo_index, 0, combo_chain.size() - 1)
@@ -220,6 +230,7 @@ func receive_attack(attack: Dictionary, from: Node) -> void:
 		return
 	if is_parry_window_open():
 		_change_state(State.IDLE if is_on_floor() else State.FALL)
+		_sfx("parry")
 		parried.emit(from)
 		var foe: Node = from
 		if foe != null and foe.has_method("receive_attack"):
@@ -242,6 +253,7 @@ func try_consume_parry() -> bool:
 			best = d
 			foe = e
 	_change_state(State.IDLE if is_on_floor() else State.FALL)
+	_sfx("parry")
 	parried.emit(foe)
 	return true
 
@@ -250,9 +262,11 @@ func take_damage(amount: float, _from_dir: int = 0) -> void:
 		return
 	hp = maxf(hp - amount, 0.0)
 	health_changed.emit(hp, max_hp)
+	_sfx("hit")
 	if hp <= 0.0:
 		_change_state(State.DEAD)
 		_set_iframes(true)
+		_sfx("death")
 		died.emit()
 	else:
 		_change_state(State.HURT)
